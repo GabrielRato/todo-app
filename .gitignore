@@ -35,6 +35,14 @@
 ehthumbs.db
 Thumbs.db
 
+# Executables #
+###############
+*.pyc
+
 # Folders you want to ignore #
 ############################
 flask/
+
+# Configs with authentication #
+###############################
+config.py
