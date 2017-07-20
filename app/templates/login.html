@@ -1,0 +1,16 @@
+
+
+<!-- extend from base layout -->
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block content %}
+<div class= "container">
+      <form method="POST" action="" name="login">
+<dl>
+    {{wtf.quick_form(form) }}
+      <input class="btn btn-primary" type="submit" value="Login">
+
+</dl>
+    </form>
+</div>
+{% endblock %}
