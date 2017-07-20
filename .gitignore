@@ -38,10 +38,12 @@ Thumbs.db
 # Executables #
 ###############
 *.pyc
+*.swp
 
 # Folders you want to ignore #
 ############################
 flask/
+db_repository/
 
 # Configs with authentication #
 ###############################
