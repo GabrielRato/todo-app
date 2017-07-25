@@ -7,7 +7,7 @@ from .forms import LoginForm, SignupForm
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
-from models import User
+from models import User, Post
 
 @app.route('/')
 @app.route('/index')
@@ -19,9 +19,12 @@ def index():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-            verify_password(nickename, password)
-            print (form.nickname.data, str(form.remember_me.data))
-            return redirect('/index')
+            if( verify_password(form.nickname.data, form.password.data) ):
+                return redirect('/user/'+form.nickname.data)
+            else:
+                abort(404)
+            print (form.nickname.data, str(form.password.data))
+
     return render_template('login.html',
                            title='Sign In',
                            form=form)
@@ -51,14 +54,21 @@ def signup():
     return render_template('signup.html',
                            title='Sign In',
                            form=form)
-
+@app.route('/user/<nickname>')
+#@auth.login_required
+def user(nickname):
+    user = User.query.filter_by(nickname=nickname).first()
+    user, post_user, l = db.session.query(User, Post).select_from(Post).join(User).all()
+    print post_user
+    return render_template('user_page.html', user = user.nickname
+                            , posts = user.posts)
 
 @auth.verify_password
-def verify_password(nickename, password):
-    user = User.query.filter_by(nickename = nickename).first()
+def verify_password(nickname, password):
+    user = User.query.filter_by(nickname = nickname).first()
     if not user or not user.verify_password(password):
         return False
-    g.user = user
+#    g.user = user
     return True
 
 @app.route('/api/users', methods = ['POST'])
