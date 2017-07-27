@@ -58,10 +58,13 @@ def signup():
 #@auth.login_required
 def user(nickname):
     user = User.query.filter_by(nickname=nickname).first()
-    user, post_user, l = db.session.query(User, Post).select_from(Post).join(User).all()
-    print post_user
+    post_user = Post.query.filter(Post.user_id == user.id).with_entities(Post.body)
+    list_post = []
+    for post in post_user:
+        list_post.append(str(post.body))
+    print list_post
     return render_template('user_page.html', user = user.nickname
-                            , posts = user.posts)
+                            , posts = list_post)
 
 @auth.verify_password
 def verify_password(nickname, password):

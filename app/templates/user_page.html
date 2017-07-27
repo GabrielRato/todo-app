@@ -5,8 +5,10 @@
 
 
 {% block content %}
-<meta id="user-posts" data-name="{{post}}" >
-assas {{post}}
+<meta id="user-posts" data-name="{{posts}}" >
+assas {{posts}}
+<!-- Despite u can do this, is better AJAX approach... -->
+<script> var _post = {{ posts|tojson }}; </script>
 
 <h1>Hello, {{ user }}</h1>
 <script
