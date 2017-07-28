@@ -5,7 +5,19 @@ $( document ).ready(function() {
     console.log(data.data());
 
     populate_task_list();
+    $('#new_task').on('keypress', function (e) {
+          if(e.which === 13){
 
+             //Disable textbox to prevent multiple submit
+             $(this).attr("disabled", "disabled");
+
+             console.log('soajfo');
+             //Do Stuff, submit, etc..
+
+             //Enable the textbox again if needed.
+             $(this).removeAttr("disabled");
+          }
+    });
 });
 
 
