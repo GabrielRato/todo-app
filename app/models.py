@@ -2,7 +2,8 @@
 
 
 #definyng my database
-from app import db
+from flask import Flask
+from app import app,db
 from passlib.apps import custom_app_context as pwd_context
 
 
@@ -15,8 +16,13 @@ class User(db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     active = db.Column(db.Boolean)
 
+    def __init__(self, nickname, email, pwd, active = True):
+        self.password_hash = self.hash_password(pwd)
+        self.nickname = nickname
+        self.active = active
+
     def hash_password(self, password):
-        self.password_hash = pwd_context.encrypt(password)
+        return  pwd_context.encrypt(password)
 
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
@@ -36,7 +42,7 @@ class User(db.Model):
         return False
 
     def get_id(self):
-        unicode(self.id)
+        return unicode(self.id)
 
 
 class Post(db.Model):
