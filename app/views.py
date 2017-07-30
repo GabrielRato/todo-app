@@ -1,12 +1,12 @@
 
-from flask import render_template, redirect, request, abort
+from flask import render_template, redirect, request, abort, url_for
 from app import app, db
 from flask_httpauth import HTTPBasicAuth
 from .forms import LoginForm, SignupForm
-
+from flask_login import login_required, login_user, current_user, LoginManager, logout_user
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
-
+from js_api import new_task
 from models import User, Post
 
 @app.route('/')
@@ -19,11 +19,20 @@ def index():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-            if( verify_password(form.nickname.data, form.password.data) ):
-                return redirect('/user/'+form.nickname.data)
-            else:
-                abort(404)
-            print (form.nickname.data, str(form.password.data))
+        nickname = form.nickname.data
+        password = form.password.data
+
+        user = User.query.filter(
+                                User.nickname == nickname,
+                                ((User.active.is_(None))|(User.active != False)),
+                                ).first()
+        
+        if( verify_password(nickname, password) ):
+            #loggin the current user queried by alchemy above
+            login_user(user)
+            return redirect('/user/'+form.nickname.data)
+        else:
+            return redirect(url_for('login'))
 
     return render_template('login.html',
                            title='Sign In',
@@ -65,6 +74,8 @@ def user(nickname):
     print list_post
     return render_template('user_page.html', user = user.nickname
                             , posts = list_post)
+
+
 
 @auth.verify_password
 def verify_password(nickname, password):

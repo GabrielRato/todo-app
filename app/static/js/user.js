@@ -11,9 +11,10 @@ $( document ).ready(function() {
              //Disable textbox to prevent multiple submit
              $(this).attr("disabled", "disabled");
 
+             task = [{'tst_newtask':1}];
+             $.post('/add_new_task', JSON.stringify(task));
              console.log('soajfo');
              //Do Stuff, submit, etc..
-
              //Enable the textbox again if needed.
              $(this).removeAttr("disabled");
           }

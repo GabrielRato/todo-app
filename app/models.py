@@ -13,6 +13,7 @@ class User(db.Model):
     email = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    active = db.Column(db.Boolean)
 
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
@@ -22,6 +23,21 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)
+
+    #Login related functions below, the assumption follow`s 
+    #if we get 2 here, the user are validate
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        unicode(self.id)
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
