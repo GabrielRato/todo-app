@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}This is an example page{% endblock %}
+
+
+
+{% block content %}
+
+<h1>Todo App</h1>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+  crossorigin="anonymous"></script>
+<script type="text/javascript" src="/static/js/user.js"></script>
+<div class="panel panel-info col-sm-offset-4 col-sm-5">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Task List</div>
+  <div class="panel-body">
+ <input type="text" id = "new_task" class="form-control"
+  placeholder="New Task" aria-describedby="basic-addon2">
+  </div>
+
+  <!-- List group -->
+  <ul class="list-group">
+
+  </ul>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('static/js', filename='user.js')}}"></script>
+{{super()}}
+{% endblock %}
